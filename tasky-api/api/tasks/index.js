@@ -5,7 +5,12 @@ import asyncHandler from 'express-async-handler';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const tasks = await Task.find();
+    const tasks = await Task.find().populate('userId', 'username');
+    res.status(200).json(tasks);
+});
+
+router.get('/user/:uid', async (req, res) => {
+    const tasks = await Task.find({ userId: `${req.params.uid}` });
     res.status(200).json(tasks);
 });
 
